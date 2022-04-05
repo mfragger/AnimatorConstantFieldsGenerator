@@ -1,5 +1,5 @@
 # Animator ConstantFields Generator
-A unity script that generates constant fields of tags and layers in a unity project
+A unity script that generates constant fields for animatorControllers in a unity project
 
 Install
 Go to ```Package Manager``` -> ```Add Package from git URL``` 
