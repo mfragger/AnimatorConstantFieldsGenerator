@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEditor.Compilation;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityEngine.Windows;
 
 namespace BarelyAStudio.AnimatorConstantFieldsGenerator
@@ -19,9 +22,12 @@ namespace BarelyAStudio.AnimatorConstantFieldsGenerator
 
             private static void GenerateCode()
             {
-
                 var nameSpace = AnimatorConstantFieldsGeneratorSettings.GetOrCreateSettings().@namespace;
+#if UNITY_2021_2_OR_NEWER
+                StringBuilder stringBuilder = new();
+#elif UNITY_2020_3_OR_NEWER
                 StringBuilder stringBuilder = new StringBuilder();
+#endif
 
                 var results = AssetDatabase.FindAssets("t:AnimatorController");
 
@@ -69,10 +75,29 @@ namespace BarelyAStudio.AnimatorConstantFieldsGenerator
                                 stringBuilder.AppendLine($"\t\tpublic readonly struct Animations");
                                 stringBuilder.AppendLine("\t\t{");
                                 {
+#if UNITY_2021_2_OR_NEWER
+                                    Dictionary<string, int> existingName = new();
+#elif UNITY_2020_3_OR_NEWER
+                                    Dictionary<string, int> existingName = new Dictionary<string, int>();
+#endif
                                     for (int j = 0; j < clips.Length; j++)
                                     {
                                         var animationName = clips[j].name;
-                                        stringBuilder.AppendLine($"\t\t\tpublic const string {animationName.ToUpper().Replace(" ", "_")} = \"{animationName}\";");
+
+                                        if (existingName.ContainsKey(animationName))
+                                        {
+                                            existingName[animationName]++;
+                                        }
+                                        else
+                                        {
+                                            existingName.Add(animationName, 0);
+                                        }
+
+                                        var upperedName = animationName.ToUpper();
+
+                                        string counter = existingName[animationName] > 0 ? $"_{existingName[animationName]}" : "";
+
+                                        stringBuilder.AppendLine($"\t\t\tpublic const string {Regex.Replace(upperedName, @"[^\w]", "_")}{counter} = \"{animationName}\";");
                                     }
                                 }
                                 stringBuilder.AppendLine("\t\t}");
@@ -107,13 +132,17 @@ namespace BarelyAStudio.AnimatorConstantFieldsGenerator
                                                 stateMachineStringBuilder.AppendLine($"\t\t\t\tpublic readonly struct States");
                                                 stateMachineStringBuilder.AppendLine("\t\t\t\t{");
                                                 {
-                                                    stateMachineStringBuilder.AppendLine($"\t\t\t\t\tpublic const int DEFAULT_STATE = {stateMachine.defaultState.name.ToUpper().Replace(" ", "_")};");
+                                                    var upperedName = stateMachine.defaultState.name.ToUpper();
+
+                                                    stateMachineStringBuilder.AppendLine($"\t\t\t\t\tpublic const int DEFAULT_STATE = {Regex.Replace(upperedName, @"[^\w]", "_")};");
                                                     for (int s = 0; s < states.Length; s++)
                                                     {
                                                         var state = states[s].state;
                                                         var stateName = state.name;
 
-                                                        stateMachineStringBuilder.AppendLine($"\t\t\t\t\tpublic const int {stateName.ToUpper().Replace(" ", "_")} = {Animator.StringToHash(stateName)};");
+                                                        upperedName = stateName.ToUpper();
+
+                                                        stateMachineStringBuilder.AppendLine($"\t\t\t\t\tpublic const int {Regex.Replace(upperedName, @"[^\w]", "_")} = {Animator.StringToHash(stateName)};");
                                                     }
                                                 }
                                                 stateMachineStringBuilder.AppendLine("\t\t\t\t}");

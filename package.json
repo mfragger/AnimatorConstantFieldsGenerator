@@ -1,15 +1,15 @@
 {
-    "name": "com.barelyastudio.animatorconstantfieldsgenerator",
-    "version": "1.0.0",
-    "displayName": "Animator Constant Fields Generator",
-    "description": "Generates constant values from animator files",
-    "unity": "2020.3",
-    "author": {
-        "name": "mfragger"
-    },
-    "keywords": [
-        "Animator",
-        "generator",
-        "constants"
-    ]
+  "name": "com.barelyastudio.animatorconstantfieldsgenerator",
+  "version": "1.1.0",
+  "displayName": "Animator Constant Fields Generator",
+  "description": "Generates constant values from animator files",
+  "unity": "2020.3",
+  "author": {
+    "name": "mfragger"
+  },
+  "keywords": [
+    "Animator",
+    "generator",
+    "constants"
+  ]
 }
