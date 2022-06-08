@@ -1,6 +1,6 @@
 {
   "name": "com.barelyastudio.animatorconstantfieldsgenerator",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "displayName": "Animator Constant Fields Generator",
   "description": "Generates constant values from animator files",
   "unity": "2020.3",

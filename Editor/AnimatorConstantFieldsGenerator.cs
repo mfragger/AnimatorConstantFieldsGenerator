@@ -149,14 +149,10 @@ namespace BarelyAStudio.AnimatorConstantFieldsGenerator
                                                         }
                                                     }
                                                     stateMachineStringBuilder.AppendLine("\t\t\t\t}");
+                                                    stringBuilder.Append(stateMachineStringBuilder.ToString());
                                                 }
                                             }
-                                            stateMachineStringBuilder.AppendLine("\t\t\t}");
-                                        }
-
-                                        if (stateMachineStringBuilder != null)
-                                        {
-                                            stringBuilder.Append(stateMachineStringBuilder.ToString());
+                                            stringBuilder.AppendLine("\t\t\t}");
                                         }
                                     }
                                     stringBuilder.AppendLine("\t\t}");
