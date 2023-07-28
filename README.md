@@ -3,7 +3,7 @@ A unity script that generates constant fields for animatorControllers in a unity
 
 Install
 Go to ```Package Manager``` -> ```Add Package from git URL``` 
-Paste the following ```https://github.com/BarelyAStudio/AnimatorConstantFieldsGenerator.git```
+Paste the following ```https://github.com/mfragger/AnimatorConstantFieldsGenerator.git```
 
 # Sample Generated Code
 ```cs
